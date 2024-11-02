@@ -8,9 +8,11 @@
 - make
 
 ## Build
-```cd src```
-```mkdir build```
-```cd build```
-```cmake ..``` or ```cmake -G "Your generator name" ..```
-```make```
+```
+cd src
+mkdir build
+cd build
+cmake .. OR cmake -G "Your generator name" ..
+make
+```
 
