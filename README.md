@@ -1,2 +1,8 @@
 # B2MBlockchain
-Distributed blockchain database written in C++ and Python
+### Distributed blockchain database written in C++ and Python
+
+## Build
+- ```mkdir build```
+- ```cd build```
+- ```cmake ..``` or ```cmake -G "Your generator name" ..```
+- ```make```
