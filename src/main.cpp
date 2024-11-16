@@ -1,12 +1,10 @@
-#include <pybind11/pybind11.h>
 #include <iostream>
+#include "blockchain.h"
 
-namespace py = pybind11;
+int main() {
+    Transaction* trans = new Transaction("123", "321", 5);
+    trans->print();
 
-void blockchain() {
-    std::cout << "Ecce Blockchain";    
-}
-
-PYBIND11_MODULE(main, handle) {
-    handle.def("blockchain", &blockchain);
+    delete trans;
+    return 0;
 }
