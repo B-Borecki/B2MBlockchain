@@ -26,10 +26,14 @@
 *.a
 *.lib
 
-# Executables
+# Executables 
+/src/*
 *.exe
 *.out
 *.app
 
 myCmakeLists.txt
 **/build/
+
+# Code editors settings
+.vscode/
