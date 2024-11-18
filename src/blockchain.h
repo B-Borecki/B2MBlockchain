@@ -21,16 +21,12 @@ namespace Blockchain
 
   class Block
   {
-  private:
-    static int count_id_block;
-
   public:
     int id_block;
     int id_prev;
     std::vector<Transaction> t_actions_lst;
 
-    Block();
-    Block(std::vector<Transaction> &t_actions_lst_argv);
+    Block(int id, int prev, std::vector<Transaction> &t_actions_lst_argv);
 
     void print();
   };
