@@ -1,10 +1,7 @@
 #include "blockchain.h"
 
-Blockchain::Block::Block() : id_block(0), id_prev(-1) {}
-
-Blockchain::Block::Block(std::vector<Transaction> &t_actions_lst_argv)
-    : t_actions_lst(t_actions_lst_argv),
-      id_block(++count_id_block) {}
+Blockchain::Block::Block(int id, int prev, std::vector<Transaction> &t_actions_lst_argv)
+    : id_block(id), id_prev(prev) t_actions_lst(t_actions_lst_argv) {}
 
 void Blockchain::Block::print()
 {
