@@ -4,30 +4,35 @@
 #include <string>
 #include <vector>
 
-namespace Blockchain
-{
+namespace Blockchain {
+    
+    class Transaction {
+    private:
+        std::string sender_id;
+        std::string receiver_id;
+        double amount;
+    public:
+        Transaction(std::string sender, std::string receiver, double amt);
+        void print() const;
+    };
 
-  class Transaction
-  {
-  private:
-    std::string sender_id;
-    std::string receiver_id;
-    double amount;
+    class Block {
+    public:
+        int id_block;
+        int id_prev;
+        std::vector<Transaction> t_actions_lst;
+        Block(int id_block, int id_prev, const std::vector<Transaction>& t_actions_lst_argv);
+        void print() const;
+    };
 
-  public:
-    Transaction(std::string sender, std::string receiver, double amt);
-    void print() const;
-  };
-
-  class Block
-  {
-  public:
-    int id_block;
-    int id_prev;
-    std::vector<Transaction> t_actions_lst;
-
-    Block(int id, int prev, std::vector<Transaction> &t_actions_lst_argv);
-
-    void print();
-  };
+    class Blockchain {
+    private:
+        int id_first;
+        std::vector<Block> chain;
+        Block create_first_block();
+    public:
+        Blockchain();
+        void add_block(const std::vector<Transaction>& tran_list);
+        void print_chain() const;
+    };
 }
