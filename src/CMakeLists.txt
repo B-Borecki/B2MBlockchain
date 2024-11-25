@@ -5,4 +5,6 @@ project(B2MBlockchain)
 add_executable(blockchain
     main.cpp
     transaction.cpp
+    block.cpp
+    blockchain.cpp
 )

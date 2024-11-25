@@ -7,13 +7,14 @@ Blockchain::Blockchain::Blockchain() {
 
 Blockchain::Block Blockchain::Blockchain::create_first_block() {
     std::vector<Transaction> first_tran = { Transaction("System", "User", 1000.0) };
-    Block genesis_block(0, -1, first_tran); 
+    Block genesis_block(first_tran); 
     return genesis_block;
 }
 
-void Blockchain::Blockchain::add_block(const std::vector<Transaction>& tran_list) {
-    int prev_block_id = chain.back().id_block; 
-    Block new_block(chain.size(), prev_block_id, tran_list);
+void Blockchain::Blockchain::add_block(Block new_block) {
+    if (!chain.empty()) {
+        new_block.id_prev = chain.back().id_block;
+    }
     chain.push_back(new_block);
 }
 
