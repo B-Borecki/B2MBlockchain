@@ -2,19 +2,14 @@
 
 Blockchain::Blockchain::Blockchain() {
     id_first = 0;
-    chain.push_back(create_first_block());
-}
-
-Blockchain::Block Blockchain::Blockchain::create_first_block() {
-    std::vector<Transaction> first_tran = { Transaction("System", "User", 1000.0) };
-    Block genesis_block(first_tran); 
-    return genesis_block;
+    std::vector<Transaction> first_tran = {};
+    Block genesis_block(first_tran, 0);
+    genesis_block.id_prev = -1;
+    chain.push_back(genesis_block);
 }
 
 void Blockchain::Blockchain::add_block(Block new_block) {
-    if (!chain.empty()) {
-        new_block.id_prev = chain.back().id_block;
-    }
+    new_block.id_prev = chain.back().id_block;
     chain.push_back(new_block);
 }
 

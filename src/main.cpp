@@ -10,8 +10,10 @@ int main() {
         Blockchain::Transaction("User3", "User2", 20.0),
         Blockchain::Transaction("User1", "User4", 10.0)
     };
-    blockchain.add_block(transactions1);
-    blockchain.add_block(transactions2);
+    Blockchain::Block block1(transactions1, 1);
+    Blockchain::Block block2(transactions2, 2);
+    blockchain.add_block(block1);
+    blockchain.add_block(block2);
     blockchain.print_chain();
     return 0;
 }

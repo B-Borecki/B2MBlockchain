@@ -17,13 +17,11 @@ namespace Blockchain {
     };
 
     class Block {
-    private:
-        static int global_block_counter;
     public:
         int id_block;
         int id_prev;
         std::vector<Transaction> t_actions_lst;
-        Block(const std::vector<Transaction>& t_actions_lst_argv);
+        Block(const std::vector<Transaction>& t_actions_lst_argv, int id);
         void print() const;
     };
 
@@ -31,7 +29,6 @@ namespace Blockchain {
     private:
         int id_first;
         std::vector<Block> chain;
-        Block create_first_block();
     public:
         Blockchain();
         void add_block(Block block);
