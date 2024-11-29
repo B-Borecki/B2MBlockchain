@@ -34,4 +34,18 @@ namespace Blockchain {
         void add_block(Block block);
         void print_chain() const;
     };
+
+    class Web {
+    public:
+        std::vector<Transaction> trans_lst;
+        std::vector<Block> block_lst;
+    };
+
+    class Miner {
+    private:
+        std::vector<Transaction>& trans_lst;
+        std::vector<Block>& block_lst;
+    public:
+        Miner(Web web);
+    };
 }
