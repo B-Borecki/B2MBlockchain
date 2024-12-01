@@ -7,4 +7,5 @@ add_executable(blockchain
     transaction.cpp
     block.cpp
     blockchain.cpp
+    miner.cpp
 )

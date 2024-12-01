@@ -3,8 +3,9 @@
 Blockchain::Blockchain::Blockchain() {
     id_first = 0;
     std::vector<Transaction> first_tran = {};
-    Block genesis_block(first_tran, 0);
+    Block genesis_block(first_tran);
     genesis_block.id_prev = -1;
+    genesis_block.id_block = 0;
     chain.push_back(genesis_block);
 }
 

@@ -1,6 +1,6 @@
 #include "blockchain.h"
 
-Blockchain::Block::Block(const std::vector<Transaction>& t_actions_lst_argv, int id): t_actions_lst(t_actions_lst_argv), id_block(id) {}
+Blockchain::Block::Block(const std::vector<Transaction>& t_actions_lst_argv): t_actions_lst(t_actions_lst_argv) {}
 
 void Blockchain::Block::print() const {
     std::cout << "Block " << id_block << " info:" << std::endl;

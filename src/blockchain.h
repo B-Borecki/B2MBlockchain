@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <mutex>
+#include <condition_variable>
 
 namespace Blockchain {
     
@@ -21,7 +23,7 @@ namespace Blockchain {
         int id_block;
         int id_prev;
         std::vector<Transaction> t_actions_lst;
-        Block(const std::vector<Transaction>& t_actions_lst_argv, int id);
+        Block(const std::vector<Transaction>& t_actions_lst_argv);
         void print() const;
     };
 
@@ -37,15 +39,18 @@ namespace Blockchain {
 
     class Web {
     public:
-        std::vector<Transaction> trans_lst;
+        std::vector<Transaction> mempool;
         std::vector<Block> block_lst;
     };
 
     class Miner {
     private:
-        std::vector<Transaction>& trans_lst;
+        std::vector<Transaction>& mempool;
         std::vector<Block>& block_lst;
+        std::mutex& mtx;
+        std::condition_variable& cv;
     public:
-        Miner(Web web);
+        Miner(Web& web, std::mutex& m, std::condition_variable& c);
+        void mine();
     };
 }
