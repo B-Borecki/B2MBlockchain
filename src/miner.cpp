@@ -1,9 +1,10 @@
-#include "blockchain.h"
-#include <mutex>
+#include "blockchain.hpp"
 #include <condition_variable>
+#include <mutex>
 #include <thread>
 
-Blockchain::Miner::Miner(Web& web, std::mutex& m, std::condition_variable& c) : mempool(web.mempool), block_lst(web.block_lst), mtx(m), cv(c) {}
+Blockchain::Miner::Miner(Web &web, std::mutex &m, std::condition_variable &c)
+		: mempool(web.mempool), block_lst(web.block_lst), mtx(m), cv(c) {}
 
 void Blockchain::Miner::mine() {
 	// hard work
@@ -11,7 +12,7 @@ void Blockchain::Miner::mine() {
 
 	// waiting for enough transactions
 	std::unique_lock<std::mutex> lock(mtx);
-	cv.wait(lock, [&]{return mempool.size() >= 4;});
+	cv.wait(lock, [&] { return mempool.size() >= 4; });
 
 	// create Transaction vector
 	std::vector<Transaction> trans_lst;
