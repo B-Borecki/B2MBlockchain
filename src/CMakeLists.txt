@@ -8,4 +8,5 @@ add_executable(blockchain
     block.cpp
     blockchain.cpp
     miner.cpp
+    emitter.cpp
 )
