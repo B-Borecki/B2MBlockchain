@@ -2,6 +2,7 @@
 #include <condition_variable>
 #include <mutex>
 #include <thread>
+#include <iostream>
 
 int main() {
 	std::mutex mtx;
@@ -12,7 +13,6 @@ int main() {
 	// let the miner mine
 	Blockchain::Miner miner1(web, mtx, cv);
 	std::thread miner_thread(&Blockchain::Miner::mine, &miner1);
-
 	Blockchain::Emitter emitter1(web, mtx, cv);
 
 	// creating threads to send transactions using emitter

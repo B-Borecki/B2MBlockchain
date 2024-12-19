@@ -1,10 +1,15 @@
 #include "blockchain.hpp"
+#include <string>
 #include <condition_variable>
 #include <mutex>
 #include <thread>
+#include <cryptlib.h>
+#include <sha.h>
+#include <filters.h>
+#include <base64.h>
 
 Blockchain::Miner::Miner(Web &web, std::mutex &m, std::condition_variable &c)
-		: mempool(web.mempool), block_lst(web.block_lst), mtx(m), cv(c) {}
+	: Node(web, m, c) {}
 
 void Blockchain::Miner::mine() {
 	// hard work
@@ -19,6 +24,13 @@ void Blockchain::Miner::mine() {
 	for (int i = 0; i < 4; i++) {
 		trans_lst.push_back(mempool[i]);
 	}
+	std::string input = "haszuj mje";
+    CryptoPP::SHA256 hash;
+    std::string hasz;
+    CryptoPP::StringSource foo(input, true,
+    new CryptoPP::HashFilter(hash,
+      new CryptoPP::Base64Encoder (
+         new CryptoPP::StringSink(hasz))));
 
 	// create block
 	Block block(trans_lst);

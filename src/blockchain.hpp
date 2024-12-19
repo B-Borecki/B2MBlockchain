@@ -46,28 +46,27 @@ namespace Blockchain {
 		std::vector<Block> block_lst;
 	};
 
-	class Miner {
-	private:
-		int id_miner;
+	class Node {
+	protected:
+		int id;
 		std::vector<Transaction> &mempool;
 		std::vector<Block> &block_lst;
 		std::mutex &mtx;
 		std::condition_variable &cv;
+	public:
+		Node(Web &web, std::mutex &m, std::condition_variable &c)
+			: mempool(web.mempool), block_lst(web.block_lst), mtx(m), cv(c) {}
+	};
 
+	class Miner : private Node {
 	public:
 		Miner(Web &web, std::mutex &m, std::condition_variable &c);
 		void mine();
 	};
 
-	class Emitter {
-	private:
-		int id_emitter;
-		std::vector<Transaction> &mempool;
-		std::mutex &mtx;
-		std::condition_variable &cv;
-
+	class Emitter : private Node {
 	public:
 		Emitter(Web &web, std::mutex &m, std::condition_variable &c);
 		void emit(std::string id_sender, std::string id_receiver, double amount);
 	};
-} // namespace Blockchain
+}
