@@ -1,5 +1,6 @@
 #include "blockchain.hpp"
 #include <string>
+#include <sstream>
 #include <condition_variable>
 #include <mutex>
 #include <thread>
@@ -8,13 +9,10 @@
 #include <filters.h>
 #include <base64.h>
 
-Blockchain::Miner::Miner(Web &web, std::mutex &m, std::condition_variable &c)
-	: Node(web, m, c) {}
+Blockchain::Miner::Miner(Web &web, std::mutex &m, std::condition_variable &c, Blockchain *chain)
+	: Node(web, m, c, chain) {}
 
 void Blockchain::Miner::mine() {
-	// hard work
-	std::this_thread::sleep_for(std::chrono::seconds(2));
-
 	// waiting for enough transactions
 	std::unique_lock<std::mutex> lock(mtx);
 	cv.wait(lock, [&] { return mempool.size() >= 4; });
@@ -24,15 +22,32 @@ void Blockchain::Miner::mine() {
 	for (int i = 0; i < 4; i++) {
 		trans_lst.push_back(mempool[i]);
 	}
-	std::string input = "haszuj mje";
-    CryptoPP::SHA256 hash;
-    std::string hasz;
-    CryptoPP::StringSource foo(input, true,
-    new CryptoPP::HashFilter(hash,
-      new CryptoPP::Base64Encoder (
-         new CryptoPP::StringSink(hasz))));
-
 	// create block
 	Block block(trans_lst);
+	block.id_prev = blockchain->id_last();
+
+	int nonce = 0;
+  std::string hash;
+ 	std::stringstream ss;
+	do {
+		hash = "";
+		nonce++;
+		ss << block.id_prev;
+		auto trans = block.t_actions_lst;
+		for (int i = 0; i < trans.size(); i++) {
+			ss << trans[i].hash();
+		}
+		ss << nonce;
+    CryptoPP::SHA256 sha256;
+    CryptoPP::StringSource foo(ss.str(), true,
+    new CryptoPP::HashFilter(sha256,
+      new CryptoPP::Base64Encoder (
+         new CryptoPP::StringSink(hash))));
+    ss.clear();
+	} while (hash.substr(0, 2) != "00");
+
+	block.id_block = hash;
+	block.nonce = nonce;
+
 	block_lst.push_back(block);
 }

@@ -13,6 +13,9 @@ void Blockchain::Emitter::emit(
 	Transaction transaction(id_sender, id_receiver, amount);
 
 	{
+		std::lock_guard<std::mutex> lock(mtx);
 		mempool.push_back(transaction);
 	}
+
+	cv.notify_all();
 }

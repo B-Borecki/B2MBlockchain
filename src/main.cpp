@@ -11,7 +11,7 @@ int main() {
 	Blockchain::Web web;
 
 	// let the miner mine
-	Blockchain::Miner miner1(web, mtx, cv);
+	Blockchain::Miner miner1(web, mtx, cv, &blockchain);
 	std::thread miner_thread(&Blockchain::Miner::mine, &miner1);
 	Blockchain::Emitter emitter1(web, mtx, cv);
 
