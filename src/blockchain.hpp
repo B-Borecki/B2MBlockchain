@@ -6,6 +6,13 @@
 #include <random>
 #include <string>
 #include <vector>
+#include <sstream>
+#include <cryptlib.h>
+#include <rsa.h>
+#include <osrng.h>
+#include <base64.h>
+#include <filters.h>
+#include <sha.h>
 
 namespace Blockchain {
 
@@ -14,11 +21,14 @@ namespace Blockchain {
 		std::string sender_id;
 		std::string receiver_id;
 		double amount;
+		std::string signature;
 
 	public:
 		Transaction(std::string sender, std::string receiver, double amt);
+		void sign(const CryptoPP::RSA::PrivateKey &privateKey);
+        bool validate(const CryptoPP::RSA::PublicKey &publicKey) const;
 		void print() const;
-		std::string hash();
+		std::string hash() const;
 	};
 
 	class Block {

@@ -13,5 +13,5 @@ add_executable(blockchain
 )
 
 include_directories(/usr/include/cryptopp)
-link_directories(/usr/lib/libcryptopp.so)
+link_directories(/usr/lib/x86_64-linux-gnu/libcryptopp.so)
 target_link_libraries(blockchain cryptopp)
