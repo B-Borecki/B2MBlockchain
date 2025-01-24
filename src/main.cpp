@@ -1,8 +1,4 @@
 #include "blockchain.hpp"
-#include <condition_variable>
-#include <mutex>
-#include <thread>
-#include <iostream>
 
 int main() {
 	std::mutex mtx;
@@ -33,6 +29,5 @@ int main() {
 	Blockchain::Block new_block = web.block_lst[0];
 	blockchain.add_block(new_block);
 	blockchain.print_chain();
-
 	return 0;
 }

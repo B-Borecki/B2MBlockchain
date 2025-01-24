@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package BlockchainProto;
+
+message Transaction {
+    string sender_id = 1;
+    string receiver_id = 2;
+    double amount = 3;
+}
+
+message Block {
+    string id_block = 1;
+    string id_prev = 2;
+    int32 nonce = 3;
+    repeated Transaction t_actions_lst = 4;
+}
+
+message Blockchain {
+    repeated Block chain = 1;
+}
