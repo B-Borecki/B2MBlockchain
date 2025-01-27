@@ -1,40 +1,57 @@
 #pragma once
 
+#include "blockchain.pb.h"
 #include <condition_variable>
 #include <iostream>
 #include <mutex>
 #include <random>
 #include <string>
 #include <vector>
+#include <sstream>
+#include <cryptlib.h>
+#include <sha.h>
+#include <filters.h>
+#include <base64.h>
+#include <thread>
 
 namespace Blockchain {
 
 	class Transaction {
 	private:
-		std::string sender_id;
-		std::string receiver_id;
-		double amount;
-
+		BlockchainProto::Transaction transaction;
 	public:
 		Transaction(std::string sender, std::string receiver, double amt);
 		void print() const;
 		std::string hash();
+		BlockchainProto::Transaction get_proto();
+		void set_sender_id(std::string sender);
+		void set_receiver_id(std::string receiver);
+		void set_amount(double amount);
+		std::string sender_id() const;
+		std::string receiver_id() const;
+		double amount() const;
 	};
 
 	class Block {
+	private:
+		BlockchainProto::Block block;
 	public:
-		std::string id_block;
-		std::string id_prev;
-		int nonce;
-		std::vector<Transaction> t_actions_lst;
 		Block(const std::vector<Transaction> &t_actions_lst_argv);
+		std::vector<Transaction> t_actions_lst;
 		void print() const;
+		BlockchainProto::Block get_proto();
+		void set_id_prev(std::string id);
+		void set_id_block(std::string id);
+		void set_nonce(int nonce);
+		std::string id_prev() const;
+		std::string id_block() const;
+		int nonce() const;
 	};
 
 	class Blockchain {
 	private:
+		BlockchainProto::Blockchain blockchain;
 		std::vector<Block> chain;
-
 	public:
 		Blockchain();
 		void add_block(Block block);
