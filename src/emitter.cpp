@@ -1,8 +1,4 @@
 #include "blockchain.hpp"
-#include <condition_variable>
-#include <mutex>
-#include <string>
-#include <thread>
 
 Blockchain::Emitter::Emitter(Web &web, std::mutex &m, std::condition_variable &c)
 	: Node(web, m, c) {}

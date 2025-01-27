@@ -1,6 +1,6 @@
 #pragma once
 
-#include "blockchain.pb.h"
+#include "proto/blockchain.pb.h"
 #include <condition_variable>
 #include <iostream>
 #include <mutex>
