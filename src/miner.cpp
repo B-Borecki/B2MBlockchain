@@ -12,14 +12,18 @@
 Blockchain::Miner::Miner(Web &web, std::mutex &m, std::condition_variable &c, Blockchain *chain)
 	: Node(web, m, c, chain) {}
 
+bool Blockchain::Miner::validate_transaction(const Transaction &tx, const CryptoPP::RSA::PublicKey &pk) {
+	return tx.validate(pk);
+}
+
 void Blockchain::Miner::mine() {
 	// waiting for enough transactions
 	std::unique_lock<std::mutex> lock(mtx);
-	cv.wait(lock, [&] { return mempool.size() >= 4; });
+	cv.wait(lock, [&] { return mempool.size() >= 2; });
 
 	// create Transaction vector
 	std::vector<Transaction> trans_lst;
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 2; i++) {
 		trans_lst.push_back(mempool[i]);
 	}
 	// create block
@@ -27,7 +31,7 @@ void Blockchain::Miner::mine() {
 	block.id_prev = blockchain->id_last();
 
 	int nonce = 0;
-  std::string hash;
+  	std::string hash;
  	std::stringstream ss;
 	do {
 		hash = "";

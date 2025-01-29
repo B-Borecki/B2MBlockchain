@@ -70,18 +70,19 @@ namespace Blockchain {
 		Node(Web &web, std::mutex &m, std::condition_variable &c, Blockchain *chain)
 			: mempool(web.mempool), block_lst(web.block_lst), mtx(m), cv(c), blockchain(chain) {}
 		Node(Web &web, std::mutex &m, std::condition_variable &c)
-					: mempool(web.mempool), block_lst(web.block_lst), mtx(m), cv(c) {}
+			: mempool(web.mempool), block_lst(web.block_lst), mtx(m), cv(c) {}
 	};
 
 	class Miner : private Node {
 	public:
 		Miner(Web &web, std::mutex &m, std::condition_variable &c, Blockchain *chain);
 		void mine();
+		bool validate_transaction(const Transaction &tx, const CryptoPP::RSA::PublicKey &pk);
 	};
 
 	class Emitter : private Node {
 	public:
 		Emitter(Web &web, std::mutex &m, std::condition_variable &c);
-		void emit(std::string id_sender, std::string id_receiver, double amount);
+		void emit(std::string id_sender, std::string id_receiver, double amount, const CryptoPP::RSA::PrivateKey &sk);
 	};
 }
