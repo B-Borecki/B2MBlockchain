@@ -14,11 +14,14 @@
 #include <base64.h>
 #include <thread>
 
-namespace Blockchain {
-
-	class Transaction {
+namespace Blockchain
+{
+    // Blockchain subclasses
+	class Transaction
+	{
 	private:
 		BlockchainProto::Transaction transaction;
+
 	public:
 		Transaction(std::string sender, std::string receiver, double amt);
 		void print() const;
@@ -32,9 +35,11 @@ namespace Blockchain {
 		double amount() const;
 	};
 
-	class Block {
+	class Block
+	{
 	private:
 		BlockchainProto::Block block;
+
 	public:
 		Block(const std::vector<Transaction> &t_actions_lst_argv);
 		std::vector<Transaction> t_actions_lst;
@@ -48,10 +53,12 @@ namespace Blockchain {
 		int nonce() const;
 	};
 
-	class Blockchain {
+	class Blockchain
+	{
 	private:
 		BlockchainProto::Blockchain blockchain;
 		std::vector<Block> chain;
+
 	public:
 		Blockchain();
 		void add_block(Block block);
@@ -59,13 +66,16 @@ namespace Blockchain {
 		std::string id_last();
 	};
 
-	class Web {
+	// Nodes classes
+	class Web
+	{
 	public:
 		std::vector<Transaction> mempool;
 		std::vector<Block> block_lst;
 	};
 
-	class Node {
+	class Node
+	{
 	protected:
 		int id;
 		std::vector<Transaction> &mempool;
@@ -73,22 +83,48 @@ namespace Blockchain {
 		std::mutex &mtx;
 		std::condition_variable &cv;
 		Blockchain *blockchain;
+
 	public:
 		Node(Web &web, std::mutex &m, std::condition_variable &c, Blockchain *chain)
 			: mempool(web.mempool), block_lst(web.block_lst), mtx(m), cv(c), blockchain(chain) {}
 		Node(Web &web, std::mutex &m, std::condition_variable &c)
-					: mempool(web.mempool), block_lst(web.block_lst), mtx(m), cv(c) {}
+			: mempool(web.mempool), block_lst(web.block_lst), mtx(m), cv(c) {}
 	};
 
-	class Miner : private Node {
+	class Miner : private Node
+	{
 	public:
 		Miner(Web &web, std::mutex &m, std::condition_variable &c, Blockchain *chain);
 		void mine();
 	};
 
-	class Emitter : private Node {
+	class Emitter : private Node
+	{
 	public:
 		Emitter(Web &web, std::mutex &m, std::condition_variable &c);
 		void emit(std::string id_sender, std::string id_receiver, double amount);
 	};
+
+	// Merkle Tree
+	namespace merkle_tree
+	{
+		class Tree
+		{
+    		private:
+    			std::vector<std::string> merkle_hashes;
+
+    			std::string m_hash(std::string left_hash, std::string right_hash);
+    			std::vector<std::string> hash_transactions(std::vector<Transaction> &transactions);
+
+    		public:
+    			std::string merkle_root;
+
+    			Tree(std::vector<Transaction> &transactions);
+    			void generate_merkle_tree(std::vector<Transaction> &transactions);
+
+                void add_transactions(std::vector<Transaction> &transactions);
+    			std::vector<std::string>merkle_proof(std::string root);
+        };
+		bool validate_merkle_root(std::string root);
+	}
 }

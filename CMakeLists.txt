@@ -26,6 +26,7 @@ add_executable(blockchain
     src/blockchain.cpp
     src/miner.cpp
     src/emitter.cpp
+    src/merkle_tree.cpp
     ${PROTO_C}
     ${PROTO_H}
 )
