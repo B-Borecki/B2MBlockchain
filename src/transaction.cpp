@@ -22,7 +22,7 @@ std::string Blockchain::Transaction::hash()
 	CryptoPP::StringSource foo(ss.str(), true,
 		new CryptoPP::HashFilter(sha256,
 			new CryptoPP::Base64Encoder(
-				new CryptoPP::StringSink(hash))));
+				new CryptoPP::StringSink(hash), false)));
 	return hash;
 }
 
