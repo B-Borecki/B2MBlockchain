@@ -108,13 +108,20 @@ namespace Blockchain
 	// Merkle Tree
 	namespace merkle_tree
 	{
+	    typedef std::vector<std::vector<std::string>> vec2dstr;
+		typedef std::vector<std::string> vec1dstr;
+
+		struct proof_pair{
+		    vec1dstr proof;
+			vec1dstr direction;
+		};
+
 		class Tree
 		{
     		private:
-    			std::vector<std::string> merkle_hashes;
+    			vec2dstr merkle_hashes;
 
-    			std::string m_hash(std::string left_hash, std::string right_hash);
-    			std::vector<std::string> hash_transactions(std::vector<Transaction> &transactions);
+    			vec1dstr hash_transactions(std::vector<Transaction> &transactions);
 
     		public:
     			std::string merkle_root;
@@ -123,8 +130,11 @@ namespace Blockchain
     			void generate_merkle_tree(std::vector<Transaction> &transactions);
 
                 void add_transactions(std::vector<Transaction> &transactions);
-    			std::vector<std::string>merkle_proof(std::string root);
+    			proof_pair merkle_proof(std::string root);
+
+                void print_hashes();
         };
-		bool validate_merkle_root(std::string root);
+        std::string m_hash(std::string left_hash, std::string right_hash);
+		std::string validate_merkle_proof(proof_pair result);
 	}
 }
