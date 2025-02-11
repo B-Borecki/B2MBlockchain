@@ -2,24 +2,24 @@
 
 
 void print_test_m(){
-    std::vector<Blockchain::Transaction> lst = {
-    Blockchain::Transaction("User1", "User2", 50.0),
-    Blockchain::Transaction("User3", "User4", 75.5),
-    Blockchain::Transaction("User5", "User6", 120.0),
-    Blockchain::Transaction("User7", "User8", 30.0),
-    Blockchain::Transaction("User9", "User10", 200.0),
-    Blockchain::Transaction("User11", "User12", 15.0),
-    Blockchain::Transaction("User13", "User14", 60.0),
-    Blockchain::Transaction("User15", "User16", 90.0),
-    Blockchain::Transaction("User17", "User18", 45.0),
+    std::vector<blockchain::Transaction> lst = {
+    blockchain::Transaction("User1", "User2", 50.0),
+    blockchain::Transaction("User3", "User4", 75.5),
+    blockchain::Transaction("User5", "User6", 120.0),
+    blockchain::Transaction("User7", "User8", 30.0),
+    blockchain::Transaction("User9", "User10", 200.0),
+    blockchain::Transaction("User11", "User12", 15.0),
+    blockchain::Transaction("User13", "User14", 60.0),
+    blockchain::Transaction("User15", "User16", 90.0),
+    blockchain::Transaction("User17", "User18", 45.0),
     };
 
-    Blockchain::Block block(lst);
+    blockchain::Block block(lst);
 
-    Blockchain::merkle_tree::Tree tree(block.t_actions_lst);
+    blockchain::merkle_tree::Tree tree(block.t_actions_lst);
 
     tree.print_hashes();
-    Blockchain::merkle_tree::proof_pair result = tree.merkle_proof("XxUO0gMRxW7Xe3vi6zsrD3qu8UTuAF4Nd2TBTJgnYrE=");
+    blockchain::merkle_tree::proof_pair result = tree.merkle_proof("XxUO0gMRxW7Xe3vi6zsrD3qu8UTuAF4Nd2TBTJgnYrE=");
 
     std::cout << "Returned hashes: " << std::endl;
     for(auto &l : result.proof){
@@ -31,20 +31,20 @@ void print_test_m(){
     }
 
     std::cout << "Merkle root:          " << tree.merkle_root << std::endl;
-    std::cout << "Root from validation: " <<Blockchain::merkle_tree::validate_merkle_proof(result) << std::endl;
+    std::cout << "Root from validation: " <<blockchain::merkle_tree::validate_merkle_proof(result) << std::endl;
 
 }
 
 int main() {
 	std::mutex mtx;
 	std::condition_variable cv;
-	Blockchain::Blockchain blockchain;
-	Blockchain::Web web;
+	blockchain::Blockchain blockchain_;
+	blockchain::Web web;
 
 	// let the miner mine
-	Blockchain::Miner miner1(web, mtx, cv, &blockchain);
-	std::thread miner_thread(&Blockchain::Miner::mine, &miner1);
-	Blockchain::Emitter emitter1(web, mtx, cv);
+	blockchain::Miner miner1(web, mtx, cv, &blockchain_);
+	std::thread miner_thread(&blockchain::Miner::mine, &miner1);
+	blockchain::Emitter emitter1(web, mtx, cv);
 
 	// creating threads to send transactions using emitter
 	std::vector<std::thread> threads;
@@ -61,9 +61,9 @@ int main() {
 	miner_thread.join();
 
 	// adding to blockchain the block created by miner1
-	Blockchain::Block new_block = web.block_lst[0];
-	blockchain.add_block(new_block);
-	blockchain.print_chain();
+	blockchain::Block new_block = web.block_lst[0];
+	blockchain_.add_block(new_block);
+	blockchain_.print_chain();
 
 	print_test_m();
 	return 0;

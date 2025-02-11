@@ -14,7 +14,7 @@
 #include <base64.h>
 #include <thread>
 
-namespace Blockchain
+namespace blockchain
 {
     // Blockchain subclasses
 	class Transaction
@@ -38,7 +38,8 @@ namespace Blockchain
 	class Block
 	{
 	private:
-		BlockchainProto::Block block;
+
+	BlockchainProto::Block block;
 
 	public:
 		Block(const std::vector<Transaction> &t_actions_lst_argv);

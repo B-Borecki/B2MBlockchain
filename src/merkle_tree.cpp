@@ -2,7 +2,8 @@
 #include <cmath>
 #include <cstddef>
 #include <vector>
-namespace Blockchain{
+
+namespace blockchain {
     namespace merkle_tree {
         std::string m_hash(std::string left_hash, std::string right_hash){
             std::string hash;
