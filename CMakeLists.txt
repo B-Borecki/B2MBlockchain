@@ -21,11 +21,11 @@ protobuf_generate_cpp(PROTO_C PROTO_H blockchain.proto)
 
 add_executable(blockchain
     src/main.cpp
-    src/transaction.cpp
-    src/block.cpp
-    src/blockchain.cpp
-    src/miner.cpp
-    src/emitter.cpp
+    src/b-core/transaction.cpp
+    src/b-core/block.cpp
+    src/b-core/blockchain.cpp
+    src/b-nodes/miner.cpp
+    src/b-nodes/emitter.cpp
     src/merkle_tree.cpp
     ${PROTO_C}
     ${PROTO_H}
