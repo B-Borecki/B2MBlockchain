@@ -13,6 +13,7 @@
 #include <filters.h>
 #include <base64.h>
 #include <thread>
+#include <unordered_map>
 
 namespace blockchain
 {
@@ -109,8 +110,9 @@ namespace blockchain
 	// Merkle Tree
 	namespace merkle_tree
 	{
+	    typedef std::vector<std::string> vec1dstr;
 	    typedef std::vector<std::vector<std::string>> vec2dstr;
-		typedef std::vector<std::string> vec1dstr;
+
 
 		struct proof_pair{
 		    vec1dstr proof;
@@ -120,6 +122,7 @@ namespace blockchain
 		class Tree
 		{
     		private:
+                std::unordered_map<std::string, size_t> transactions_hash_map;
     			vec2dstr merkle_hashes;
 
     			vec1dstr hash_transactions(std::vector<Transaction> &transactions);
@@ -131,7 +134,7 @@ namespace blockchain
     			void generate_merkle_tree(std::vector<Transaction> &transactions);
 
                 void add_transactions(std::vector<Transaction> &transactions);
-    			proof_pair merkle_proof(std::string root);
+    			proof_pair merkle_proof(Transaction &transaction);
 
                 void print_hashes();
         };

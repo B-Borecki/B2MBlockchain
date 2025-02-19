@@ -19,17 +19,20 @@ void print_test_m(){
     blockchain::merkle_tree::Tree tree(block.t_actions_lst);
 
     tree.print_hashes();
-    blockchain::merkle_tree::proof_pair result = tree.merkle_proof("XxUO0gMRxW7Xe3vi6zsrD3qu8UTuAF4Nd2TBTJgnYrE=");
-
+    blockchain::Transaction trans = blockchain::Transaction("User9", "User10", 200.0);
+    blockchain::merkle_tree::proof_pair result = tree.merkle_proof(trans);
+    std::cout << "#################################################" << std::endl;
     std::cout << "Returned hashes: " << std::endl;
     for(auto &l : result.proof){
         std::cout << l << std::endl;
     }
+    std::cout << "#################################################" << std::endl;
     std::cout << "Directions: " << std::endl;
     for(auto &l : result.direction){
         std::cout << l << std::endl;
     }
 
+    std::cout << "#################################################" << std::endl;
     std::cout << "Merkle root:          " << tree.merkle_root << std::endl;
     std::cout << "Root from validation: " <<blockchain::merkle_tree::validate_merkle_proof(result) << std::endl;
 
